@@ -38,8 +38,8 @@ def is_interval(epoch):
 
 def main():
     random.seed(args.seed)  # active trainset
-    active_trainset, validset, testset = build_datasets(args.dataset, args.base_size, args.crop_size, args.init_percent)
-
+    # active_trainset, validset, testset = build_datasets(args.dataset, args.base_size, args.crop_size, args.init_percent)
+    active_trainset, validset, testset = build_datasets(args.dataset, args.init_percent)
     if args.resume_dir and args.resume_percent:  # 此 iteration 已选数据，但还未训练模型
         iter_dir = f'runs/{args.dataset}/{args.resume_dir}/runs_0{args.resume_percent}'
         active_trainset.add_preselect_data(iter_dir)  # add preselect data, and update label/unlabel data
@@ -75,6 +75,7 @@ def main():
         saver = Saver(args, exp_dir=args.resume_dir, timestamp=timestamp, suffix=run_id)
         writer = SummaryWriter(saver.exp_dir)
         # save current data path -> train model -> select new data -> 下一轮再 save data path
+        write_list_to_txt(active_trainset.label_img_paths, txt_path=os.path.join(saver.exp_dir, 'label_imgs.txt'))
         write_list_to_txt(active_trainset.label_img_paths, txt_path=os.path.join(saver.exp_dir, 'label_imgs.txt'))
         write_list_to_txt(active_trainset.label_target_paths, txt_path=os.path.join(saver.exp_dir, 'label_targets.txt'))
 

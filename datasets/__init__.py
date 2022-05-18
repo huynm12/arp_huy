@@ -1,4 +1,4 @@
-# from datasets.camvid.CamVid import CamVid, ActiveCamVid
+from datasets.camvid.CamVid import CamVid, ActiveCamVid
 from datasets.cityscapes.Cityscapes import Cityscapes, ActiveCityscapes
 from utils.vis import get_label_name_colors
 import os
@@ -15,6 +15,9 @@ data_cfg = {
         )
     },
     'CamVid': {
-        'root': '/nfs2/xs/Datasets/CamVid11',
+        'cls': (CamVid, ActiveCamVid),
+        'root': '/home/ubuntu/DEAL/autopilot_scale',
+        'img_size': (640, 480),
+        'num_classes': 76
     }
 }

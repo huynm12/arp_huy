@@ -21,7 +21,7 @@ class Trainer:
         self.num_classes = train_set.num_classes
 
         # dataloaders
-        kwargs = {'num_workers': args.workers, 'pin_memory': True}
+        kwargs = {'num_workers': args.workers, 'pin_memory': False, 'drop_last':True}
         self.train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, **kwargs)
         self.valid_loader = DataLoader(valid_set, batch_size=args.batch_size, shuffle=False, **kwargs)
         self.test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False, **kwargs)
@@ -32,14 +32,16 @@ class Trainer:
         self.iters_per_epoch = args.iters_per_epoch if args.iters_per_epoch else len(self.train_loader)
 
         # optimizer & lr_scheduler
-        train_params = [
-            {'params': model.get_1x_lr_params(), 'lr': args.lr},  # backbone
-            {'params': model.get_10x_lr_params(), 'lr': args.lr * 10},  # aspp,decoder
-        ]
-        if args.with_mask and args.with_pam:  # make gamma learnable
-            train_params.append({'params': model.mask_head.pam.gamma, 'lr': args.lr * 10})
+        train_params = model.parameters()
+        # train_params = [
+        #     {'params': model.get_1x_lr_params(), 'lr': args.lr},  # backbone
+        #     {'params': model.get_10x_lr_params(), 'lr': args.lr * 10},  # aspp,decoder
+        # ]
+        #
+        # if args.with_mask and args.with_pam:  # make gamma learnable
+        #     train_params.append({'params': model.mask_head.pam.gamma, 'lr': args.lr * 10})
 
-        self.optimizer = torch.optim.SGD(train_params,
+        self.optimizer = torch.optim.SGD(train_params, lr = args.lr,
                                          momentum=args.momentum,
                                          weight_decay=args.weight_decay,
                                          nesterov=args.nesterov)
@@ -80,10 +82,14 @@ class Trainer:
             self.lr_scheduler(self.optimizer, i, epoch)
             self.optimizer.zero_grad()
 
-            image, target = sample['img'].cuda(), sample['target'].cuda()
+            image, target = sample[0].cuda(), sample[1].cuda()
 
             if not self.args.with_mask:  # ori
-                output = self.model(image)
+                print(image.shape)
+                output = self.model(image)['semantic']
+                print(output['semantic'].shape)
+                exit()
+
                 loss = self.criterion(output, target)
                 loss.backward()
                 self.optimizer.step()
@@ -144,7 +150,7 @@ class Trainer:
         seg_losses, mask_losses = AverageMeter(), AverageMeter()
 
         for i, sample in enumerate(tbar):
-            image, target = sample['img'].cuda(), sample['target'].cuda()
+            image, target = sample[0].cuda(), sample[1].cuda()
 
             if not self.args.with_mask:
                 output = self.model(image)

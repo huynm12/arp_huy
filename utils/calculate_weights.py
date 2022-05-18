@@ -6,7 +6,7 @@ import os
 from tqdm import tqdm
 import numpy as np
 from torch.utils.data import DataLoader
-from datasets.transforms import get_test_transforms
+# from datasets.transforms import get_test_transforms
 import copy
 import matplotlib.pyplot as plt
 from datasets.base_dataset import BaseDataset
@@ -26,7 +26,7 @@ def calculate_class_freqs(dataset, num_classes):
     else:
         raise NotImplementedError
 
-    dataset.transforms = get_test_transforms(img_size)
+    # dataset.transforms = get_test_transforms(img_size)
     dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
     print("Calculating class weights..")
 

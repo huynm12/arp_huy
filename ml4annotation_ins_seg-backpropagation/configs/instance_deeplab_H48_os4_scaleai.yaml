@@ -1,0 +1,80 @@
+MODEL:
+  META_ARCHITECTURE: "instance_deeplab"
+  BN_MOMENTUM: 0.01
+  BACKBONE:
+    META: "hrnet"
+    NAME: "hrnet48"
+    DILATION: (False, False, False)
+    PRETRAINED: False
+  DECODER:
+    IN_CHANNELS: 384
+    FEATURE_KEY: "res5"
+    DECODER_CHANNELS: 256
+    ATROUS_RATES: (3, 6, 9)
+  PANOPTIC_DEEPLAB:
+    LOW_LEVEL_CHANNELS: (192, 96, 48)
+    LOW_LEVEL_KEY: ["res4", "res3", "res2"]
+    LOW_LEVEL_CHANNELS_PROJECT: (128, 64, 32)
+    INSTANCE:
+      ENABLE: True
+      LOW_LEVEL_CHANNELS_PROJECT: (64, 32, 16)
+      DECODER_CHANNELS: 128
+      HEAD_CHANNELS: 32
+      ASPP_CHANNELS: 256
+      NUM_CLASSES: (1, 2)
+      CLASS_KEY: ["center", "offset"]
+DATASET:
+  ROOT: "/root/v2"
+  DATASET: "vinai_instance"
+  TRAIN_FILE: 'train.txt'
+  TEST_FILE: 'val.txt'
+  CROP_SIZE: (513, 1025)
+  MIRROR: True
+  MIN_SCALE: 0.5
+  MAX_SCALE: 2.0
+  SCALE_STEP_SIZE: 0.1
+  MEAN: (0.485, 0.456, 0.406)
+  STD: (0.229, 0.224, 0.225)
+  SMALL_INSTANCE_AREA: 4096
+  SMALL_INSTANCE_WEIGHT: 3
+DATALOADER:
+  NUM_WORKERS: 10
+SOLVER:
+  BASE_LR: 0.0005
+  WEIGHT_DECAY: 0.0
+  WEIGHT_DECAY_NORM: 0.0
+  BIAS_LR_FACTOR: 1.0
+  WEIGHT_DECAY_BIAS: 0.0
+  OPTIMIZER: "adam"
+  LR_SCHEDULER_NAME: "WarmupPolyLR"
+  WARMUP_ITERS: 0
+LOSS:
+  CENTER:
+    NAME: "mse"
+    WEIGHT: 200.0
+  OFFSET:
+    NAME: "l1"
+    WEIGHT: 0.01
+TRAIN:
+  RESUME: True
+  IMS_PER_BATCH: 3
+  MAX_ITER: 90000
+DEBUG:
+  DEBUG: False
+  DEBUG_FREQ: 100
+TEST:
+  MODEL_FILE: '/root/ml4anno_ins_seg/outputs/instance_deeplab_H48_B8_O4_90K_vinai_instance_1025x513/final_state.pth'
+  EVAL_INSTANCE: True
+  EVAL_PANOPTIC: False
+  ORACLE_FOREGROUND: True
+  ORACLE_SEMANTIC: True
+  CROP_SIZE: (1208, 1920)
+  DEBUG: False
+POST_PROCESSING:
+  CENTER_THRESHOLD: 0.1
+  NMS_KERNEL: 7
+  TOP_K_INSTANCE: 200
+  STUFF_AREA: 2048
+OUTPUT_DIR: "./outputs/instance_deeplab_H48_B8_O4_90K_vinai_instance_1025x513"
+GPUS: (0, 1, 2, 3, 4, 5, 6, 7)
+WORKERS: 1

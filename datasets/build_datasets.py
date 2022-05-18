@@ -1,21 +1,33 @@
 from datasets import data_cfg
 
 
-def build_datasets(dataset, base_size, crop_size, init_percent=None):
+# def build_datasets(dataset, base_size, crop_size, init_percent=None):
+def build_datasets(dataset, init_percent=None):
     if dataset not in data_cfg:
         raise NotImplementedError('no such dataset')
 
     cfg = data_cfg[dataset]
     root = cfg['root']
     cls, active_cls = cfg['cls']
+    #
+    # if init_percent is None:  # 构建普通数据集
+    #     trainset = cls(root, 'train', base_size, crop_size)  # model input size
+    # else:
+    #     trainset = active_cls(root, 'train', base_size, crop_size, init_percent)
+    #
+    # valset = cls(cfg['root'], 'val', base_size, crop_size)
+    # testset = cls(cfg['root'], 'test', base_size, crop_size)
 
+    '''Camvid'''
     if init_percent is None:  # 构建普通数据集
-        trainset = cls(root, 'train', base_size, crop_size)  # model input size
+        trainset = cls(root, 'train')  # model input size
     else:
-        trainset = active_cls(root, 'train', base_size, crop_size, init_percent)
+        trainset = active_cls(root, 'train', init_percent)
 
-    valset = cls(cfg['root'], 'val', base_size, crop_size)
-    testset = cls(cfg['root'], 'test', base_size, crop_size)
+    # valset = cls(cfg['root'], 'val', base_size, crop_size)
+    # testset = cls(cfg['root'], 'test', base_size, crop_size)
+    valset = cls(cfg['root'], 'val')
+    testset = cls(cfg['root'], 'test')
 
     return trainset, valset, testset
 
@@ -27,9 +39,10 @@ if __name__ == '__main__':
     cfg = data_cfg[dataset]
     label_names, label_colors = cfg['label_colors']
 
-    trainset, valset, testset = build_datasets(dataset,
-                                               base_size=(1024, 512),
-                                               crop_size=(512, 512), init_percent=10)
+    # trainset, valset, testset = build_datasets(dataset,
+    #                                            base_size=(1024, 512),
+    #                                            crop_size=(512, 512), init_percent=10)
+    trainset, valset, testset = build_datasets(dataset, init_percent=10)
     print(len(trainset))  # 300, 10%
     print(len(valset))  # 300
     print(len(testset))  # 500

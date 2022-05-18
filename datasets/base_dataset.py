@@ -10,7 +10,7 @@ import os
 class BaseDataset(Dataset):
     def __init__(self,
                  img_paths, target_paths,
-                 split=None, base_size=None, crop_size=None, **kwargs):
+                 split=None, **kwargs):
         """
         base dataset, with img/target paths
         """
@@ -18,8 +18,8 @@ class BaseDataset(Dataset):
         self.target_paths = target_paths
         self.len_dataset = len(self.img_paths)
 
-        self.base_size = base_size  # train 基准 size
-        self.crop_size = crop_size  # train, valid, test
+        # self.base_size = base_size  # train 基准 size
+        # self.crop_size = crop_size  # train, valid, test
 
         self.split = split
         self.transform = self.get_transform(split)
@@ -78,14 +78,12 @@ class ActiveBaseDataset(BaseDataset):
     def __init__(self,
                  label_img_paths, label_target_paths,
                  unlabel_img_paths, unlabel_target_paths,
-                 split,
-                 base_size, crop_size, **kwargs):
+                 split, **kwargs):
         """
         Active base dataset, with label/unlabel img/target paths
         """
         super().__init__(label_img_paths, label_target_paths,
-                         split,
-                         base_size, crop_size, **kwargs)
+                         split, **kwargs)
         self.base_img_paths = label_img_paths
         self.base_target_paths = label_target_paths
 

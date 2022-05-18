@@ -6,9 +6,9 @@ pprint(vars(args))
 
 import os
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_HOME"] = "/nfs/xs/local/cuda-10.2"
-os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_ids
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# os.environ["CUDA_HOME"] = "/nfs/xs/local/cuda-10.2"
+# os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_ids
 
 if len(args.gpu_ids) > 1:
     args.sync_bn = True
@@ -21,7 +21,8 @@ from model.deeplab import DeepLab
 from utils.saver import Saver
 from utils.trainer import Trainer
 from utils.misc import get_curtime
-
+from segmentation.model import build_segmentation_model_from_cfg
+from segmentation.config import config
 
 def is_interval(epoch):
     return epoch % args.eval_interval == (args.eval_interval - 1)
@@ -29,9 +30,10 @@ def is_interval(epoch):
 
 def main():
     random.seed(args.seed)
-    trainset, validset, testset = build_datasets(args.dataset, args.base_size, args.crop_size)
+    trainset, validset, testset = build_datasets(args.dataset)
 
-    model = DeepLab(args.backbone, args.out_stride, trainset.num_classes, args.sync_bn)
+    model = build_segmentation_model_from_cfg(config)
+    # model = DeepLab(args.backbone, args.out_stride, trainset.num_classes, args.sync_bn)
 
     saver = Saver(args, timestamp=get_curtime())
     writer = SummaryWriter(saver.exp_dir)

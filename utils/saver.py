@@ -38,6 +38,8 @@ class Saver:
             print(f'Creating dir {self.exp_dir}')
             os.makedirs(self.exp_dir)
 
+        print(self.exp_dir)
+
     def save_checkpoint(self, state, filename='checkpoint.pth.tar'):
         filename = os.path.join(self.exp_dir, filename)
         torch.save(state, filename)

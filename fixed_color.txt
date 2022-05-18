@@ -1,0 +1,76 @@
+Void;148,105,251
+Person;204,163,251
+Person Group;12,146,99
+Pole;167,219,82
+Lane Line;46,7,117
+Road Marking;84,89,226
+Car;164,56,92
+Car Group;221,230,171
+Truck;26,43,61
+Bicycle;192,95,248
+Motorcycle;155,230,120
+Motorcycle Group;58,53,213
+Bus;118,83,185
+Other-Vehicle;189,188,221
+On-rails;51,219,246
+Trailer;88,46,191
+Bird;58,231,170
+Ground-animal;144,72,37
+Road Defect;61,201,111
+Debris;136,68,221
+Street-light;124,139,47
+Manhole;106,178,254
+Traffic-cone;2,158,6
+Fire-hydrant;60,178,222
+Speed-bump;240,132,136
+Front-traffic-sign;190,57,197
+Back-traffic-sign;30,254,244
+Back-Sign;227,129,95
+Other-sign;109,147,26
+Traffic-light-general;175,254,29
+General-single;102,246,26
+Traffic-light-counter;178,84,162
+Pedestrian-light;205,156,141
+Cyclist-light;184,20,158
+Cross-light;229,123,217
+Plus-light;65,44,24
+Other-light;136,112,232
+Curb;4,198,151
+Fence;124,3,121
+Wall;211,46,198
+Guard-rail;62,146,132
+Separator;219,169,197
+Bollard;112,122,55
+Other-Barrier;205,86,181
+Building;106,92,210
+Bridge;133,72,162
+Tunnel;149,20,166
+Sidewalk;253,119,57
+Road;220,234,45
+Traffic-island;189,190,119
+Parking Lot;235,157,226
+Road-shoulder;219,178,223
+Bike-lane;221,140,41
+Rail-track;68,170,149
+Driveway;211,13,75
+Vegetation;202,155,71
+Terrain;108,236,48
+Sky;9,51,237
+Snow;33,177,200
+Mountain;70,214,235
+Water;95,40,100
+Sand;238,151,146
+Static;109,76,60
+Dynamic;25,175,93
+Ego-vehicle;48,174,95
+Animal;55,171,116
+Barrier;126,44,70
+Flat;39,176,192
+Object;200,153,25
+Traffic-light;105,176,73
+Traffic-sign;244,73,253
+Vehicle;44,235,5
+Nature;33,71,211
+Sign;98,10,221
+Structure;195,216,0
+Other-Object;12,197,208
