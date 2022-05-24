@@ -84,6 +84,17 @@ It can be observed that objects with high difficulty scores have the following c
     </tr>
 </table>
 
+
+## Data Structure
+
+A dataset of images and corresponding labels splitted in three folders: train, valid and test.
+## How to run code
+
+Python 3.7
+Download all necessary libraries
+Segmentation Network Training: run file train.py
+Active Learning training: run file train_active.py
+
 ## References
 
 1. Yoo D, Kweon I S. [Learning loss for active learning](https://openaccess.thecvf.com/content_CVPR_2019/papers/Yoo_Learning_Loss_for_Active_Learning_CVPR_2019_paper.pdf)[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2019: 93-102.
